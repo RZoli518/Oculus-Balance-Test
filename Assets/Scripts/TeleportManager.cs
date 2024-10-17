@@ -1,6 +1,7 @@
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static OVRInput;
 
 public class TeleportManager : MonoBehaviour
@@ -15,6 +16,10 @@ public class TeleportManager : MonoBehaviour
     }
     void Update()
     {
+        if (IsMenuButtonPressed())
+        {
+            SceneManager.LoadScene(0);
+        }
         if (currentInterval <= 0)
         {
             if (IsButtonPressed())
@@ -32,6 +37,7 @@ public class TeleportManager : MonoBehaviour
 
     private void TeleportNextPosition() => gameObject.transform.SetPositionAndRotation(teleportPositions[positionIdx].position, gameObject.transform.rotation);
 
+    private bool IsMenuButtonPressed() => OVRInput.Get(Button.SecondaryIndexTrigger) || OVRInput.Get(Button.PrimaryIndexTrigger);
     private bool IsButtonPressed() => OVRInput.Get(Button.One) || OVRInput.Get(Button.Three);
 
     private int IncrementTeleportPosition(int idx)
